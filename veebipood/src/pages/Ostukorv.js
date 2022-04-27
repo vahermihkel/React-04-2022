@@ -30,14 +30,17 @@ function Ostukorv() {
   }
 
   return (
-    <div>{ostukorviTooted.map(element => 
+    <div>
+      <div>Ostukorvis on {ostukorviTooted.length} toodet</div>
+      {ostukorviTooted.map(element => 
       <div>
         {element.nimi} ({element.hind} €)
         <button onClick={() => kustuta(element)}>X</button>
         <button onClick={() => lisaOstukorvi(element)}>+</button>
       </div>   
     )}
-    <button onClick={() => muudaOstukorvi([])}>Tühjenda</button>
+    { ostukorviTooted.length > 0 && 
+      <button onClick={() => muudaOstukorvi([])}>Tühjenda</button>}
     <br /><br />
     <div>{ arvutakogusumma() } €</div>
     </div>

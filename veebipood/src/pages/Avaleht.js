@@ -41,6 +41,9 @@ function Avaleht() {
     <button onClick={() => muudaK6ik()}>Muuda kõik</button>
     <button onClick={() => muudaS6na("uus sõna")}>Anna sõnale uus väärtus</button>
     <button onClick={() => muudaKahendV22rtust(!kahendV22rtus)}>Muuda kahendväärtust</button>
+ 
+    {["Toode1","Toode2"].map(toode => <div>{toode}</div>)}
+ 
  </div>)
 }
 
