@@ -4,10 +4,7 @@ function Avaleht() {
   const [s6na, muudaS6na] = useState("50");
   const [numbriline, muudaNumber] = useState(22);
   const [kahendV22rtus, muudaKahendV22rtust] = useState(true);
-
-  // const muudaK6ik = () => {
-
-  // }
+  const [massiiv, muudaMassiiv] = useState(["Coca cola", 21, true + true]);
 
   function muudaK6ik() {
     muudaS6na("kolmas sõna");
@@ -15,8 +12,25 @@ function Avaleht() {
     muudaKahendV22rtust(false);
   }
 
+  function kustuta(massiiviElement) {
+    console.log(massiiv);
+    const j2rjekorraNumber = massiiv.indexOf(massiiviElement);
+    massiiv.splice(j2rjekorraNumber,1);
+    console.log(massiiv);
+    muudaMassiiv(massiiv.slice());
+    // massiiv.remove(massiiviElement);
+    // massiiv.delete(massiiviElement)
+  }
+
   return (
   <div>
+    <div>{massiiv.map(element => 
+      <div>
+        {element}<button onClick={() => kustuta(element)}>x</button>
+      </div>)}
+    </div>
+    <button onClick={() => muudaMassiiv(["üks", "kaks"])}>Muuda massiivi</button>
+    <br /> <br />
     <div>{ s6na }</div>
     <div>{ numbriline }</div>
     <div>{ kahendV22rtus.toString() }</div>
