@@ -1,30 +1,67 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 function Avaleht() {
-  const [s6na, muudaS6na] = useState("50");
-  const [numbriline, muudaNumber] = useState(22);
-  const [kahendV22rtus, muudaKahendV22rtust] = useState(true);
-  const [massiiv, muudaMassiiv] = useState(["Coca cola", 21, true + true]);
+  // const [s6na, muudaS6na] = useState("50");
+  // const [numbriline, muudaNumber] = useState(22);
+  // const [kahendV22rtus, muudaKahendV22rtust] = useState(true);
+  const [tooted, muudaTooted] = useState(v6taLocalStoragest());
 
-  function muudaK6ik() {
-    muudaS6na("kolmas sõna");
-    muudaNumber(312312);
-    muudaKahendV22rtust(false);
+  function v6taLocalStoragest() {
+    if (localStorage.getItem("tooted") === null) { // null on tühjus    // undefined
+      return [];
+    } else {
+      //console.log(typeof localStorage.getItem("avaleheMassiiv")); // STRING
+      //console.log(typeof JSON.parse(localStorage.getItem("avaleheMassiiv"))); // MASSIIV
+      return JSON.parse(localStorage.getItem("tooted")); // peab olema massiiv
+    }
   }
 
-  function kustuta(massiiviElement) {
-    console.log(massiiv);
-    const j2rjekorraNumber = massiiv.indexOf(massiiviElement);
-    massiiv.splice(j2rjekorraNumber,1);
-    console.log(massiiv);
-    muudaMassiiv(massiiv.slice());
-    // massiiv.remove(massiiviElement);
-    // massiiv.delete(massiiviElement)
+  // function muudaK6ik() {
+  //   muudaS6na("kolmas sõna");
+  //   muudaNumber(312312);
+  //   muudaKahendV22rtust(false);
+  // }
+
+  // function kustuta(massiiviElement) {
+  //   console.log(massiiv);
+  //   const j2rjekorraNumber = massiiv.indexOf(massiiviElement);
+  //   massiiv.splice(j2rjekorraNumber,1);
+  //   console.log(massiiv);
+  //   muudaMassiiv(massiiv.slice());
+  //   // massiiv.remove(massiiviElement);
+  //   // massiiv.delete(massiiviElement)
+  //   localStorage.setItem("avaleheMassiiv", JSON.stringify(massiiv));
+  // }
+
+  function lisaOstukorvi(toode) {
+    console.log(toode); // {nimi: 'asd', hind: '123123', aktiivne: true}
+    let ostukorviTooted = [];
+    if (sessionStorage.getItem("ostukorviTooted") !== null) {
+      // "[{nimi: 'asd', hind: '123123', aktiivne: true}]"  -->  JSON.parse()  --->
+      //    [{nimi: 'asd', hind: '123123', aktiivne: true}]
+      ostukorviTooted = JSON.parse(sessionStorage.getItem("ostukorviTooted"));
+    }
+    ostukorviTooted.push(toode);
+   // [{nimi: 'asd', hind: '123123', aktiivne: true}, {nimi: 'asd', hind: '123123', aktiivne: true}]
+      // JSON.stringify ---> "[{1},{2}]"
+      // key                |     value
+      // ostukorviTooted        [{1},{2}]
+    sessionStorage.setItem("ostukorviTooted", JSON.stringify(ostukorviTooted));
   }
 
   return (
   <div>
-    <div>{massiiv.map(element => 
+    <div>{tooted.map(element => 
+      <div>
+        <Link to={"/toode/" + element.nimi.toLowerCase().replaceAll(" ", "-")}>
+          <div>{element.nimi}</div>
+          <div>{element.hind}</div>
+        </Link>
+        <button onClick={() => lisaOstukorvi(element)}>Lisa {element.nimi} ostukorvi</button>
+      </div>
+            )}</div>
+    {/* <div>{massiiv.map(element => 
       <div>
         {element}<button onClick={() => kustuta(element)}>x</button>
       </div>)}
@@ -42,7 +79,7 @@ function Avaleht() {
     <button onClick={() => muudaS6na("uus sõna")}>Anna sõnale uus väärtus</button>
     <button onClick={() => muudaKahendV22rtust(!kahendV22rtus)}>Muuda kahendväärtust</button>
  
-    {["Toode1","Toode2"].map(toode => <div>{toode}</div>)}
+    {["Toode1","Toode2"].map(toode => <div>{toode}</div>)} */}
  
  </div>)
 }
