@@ -38,6 +38,28 @@ function Ostukorv() {
     return kogusumma;
   }
 
+  const maksma = () => {
+    const makseAndmed = {
+      "api_username": "92ddcfab96e34a5f",
+      "account_name": "EUR3D1",
+      "amount": arvutakogusumma(),
+      "order_reference": Math.random() * 999999,
+      "nonce": "a9b7fjkadsaasd132167b9902" + Math.random() * 999999 + new Date(),
+      "timestamp": new Date(),
+      "customer_url": "https://react-04-2022.web.app"
+      }
+    const headers = {
+      "Authorization": "Basic OTJkZGNmYWI5NmUzNGE1Zjo4Y2QxOWU5OWU5YzJjMjA4ZWU1NjNhYmY3ZDBlNGRhZA==",
+      "Content-Type": "application/json"
+    }
+    fetch("https://igw-demo.every-pay.com/api/v4/payments/oneoff",{
+      "method": "POST",
+      "body": JSON.stringify(makseAndmed),
+      "headers": headers
+    }).then(res => res.json())
+      .then(body => window.location.href = body.payment_link);
+  }
+
   return (
     <div>
       <div>Ostukorvis on {ostukorviTooted.length} toodet</div>
@@ -52,6 +74,7 @@ function Ostukorv() {
       <button onClick={() => muudaOstukorvi([])}>Tühjenda</button>}
     <br /><br />
     <div>{ arvutakogusumma() } €</div>
+    <button onClick={() => maksma()}>Maksma</button>
     </div>
   )
 }

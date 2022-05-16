@@ -54,13 +54,22 @@ function Avaleht() {
   <div>
     <div>{tooted.map(element => 
       <div>
-        <Link to={"/toode/" + element.nimi.toLowerCase().replaceAll(" ", "-")}>
+        <Link to={"/toode/" + element.nimi.toLowerCase().replaceAll(" ", "-").replaceAll("õ", "o")}>
           <div>{element.nimi}</div>
           <div>{element.hind}</div>
         </Link>
         <button onClick={() => lisaOstukorvi(element)}>Lisa {element.nimi} ostukorvi</button>
+        <Link to={"/muuda/" + element.nimi.toLowerCase().replaceAll(" ", "-").replaceAll("õ", "o")}>
+          <button>Muuda toodet</button>
+        </Link>
       </div>
             )}</div>
+ </div>)
+}
+
+export default Avaleht;
+
+
     {/* <div>{massiiv.map(element => 
       <div>
         {element}<button onClick={() => kustuta(element)}>x</button>
@@ -80,8 +89,3 @@ function Avaleht() {
     <button onClick={() => muudaKahendV22rtust(!kahendV22rtus)}>Muuda kahendväärtust</button>
  
     {["Toode1","Toode2"].map(toode => <div>{toode}</div>)} */}
- 
- </div>)
-}
-
-export default Avaleht;

@@ -16,7 +16,8 @@ function YksikToode() {
                 //{nimi: 'Coca cola', hind: '13', aktiivne: true} =>
                 //      "coca-cola" === "coca-cola"  true
                 //{nimi: 'Coca cola', hind: '2', aktiivne: true} SIIA EI LÄHE
-  const toode = tooted.find(element => element.nimi.toLowerCase().replaceAll(" ", "-") === nimi);
+  const toode = tooted.find(element => 
+    element.nimi.toLowerCase().replaceAll(" ", "-").replaceAll("õ", "o") === nimi);
 
   return (
     <div>
