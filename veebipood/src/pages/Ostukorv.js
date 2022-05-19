@@ -60,9 +60,14 @@ function Ostukorv() {
       .then(body => window.location.href = body.payment_link);
   }
 
+  const tyhjenda = () => {
+    muudaOstukorvi([]);
+    sessionStorage.setItem("ostukorviTooted", JSON.stringify([]));
+  }
+
   return (
     <div>
-      <div>Ostukorvis on {ostukorviTooted.length} toodet</div>
+      { ostukorviTooted.length > 0 && <div>Ostukorvis on {ostukorviTooted.length} toodet</div>}
       {ostukorviTooted.map(element => 
       <div>
         {element.nimi} ({element.hind} €)
@@ -71,12 +76,23 @@ function Ostukorv() {
       </div>   
     )}
     { ostukorviTooted.length > 0 && 
-      <button onClick={() => muudaOstukorvi([])}>Tühjenda</button>}
+      <button onClick={() => tyhjenda()}>Tühjenda</button>}
     <br /><br />
-    <div>{ arvutakogusumma() } €</div>
-    <button onClick={() => maksma()}>Maksma</button>
+    { ostukorviTooted.length > 0 && <div>{ arvutakogusumma() } €</div>}
+    { ostukorviTooted.length > 0 && <button onClick={() => maksma()}>Maksma</button>}
+    { ostukorviTooted.length === 0 && <div>Ostukorv on tühi</div>}
     </div>
   )
 }
 
 export default Ostukorv;
+
+// uue projekt - inglise keelne
+// 1. õiged lehed valmis
+// 2. seosed nendele lehtedele
+// 3. react-bootstrap
+// 4. tõlked  react i18next
+//??
+// 5. Ebay'st 200 toodet (script e-mailile)
+// 6. Võtame kasutusele need avalehel
+// 7. 

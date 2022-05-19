@@ -1,4 +1,5 @@
 import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 function YksikToode() {
   // 1. võtta URLst toote nimi   coca-cola-2l
@@ -7,8 +8,22 @@ function YksikToode() {
   // 4. kuvada see toode HTML-s
   const { nimi } = useParams();  // peab olema täpselt sama mis App.js --->  :nimi
 
-  const tooted = JSON.parse(localStorage.getItem("tooted"));  // võti peab ühtima
+  // const tooted = JSON.parse(localStorage.getItem("tooted"));  // võti peab ühtima
+  const [tooted, muudaTooted] = useState([]);
 
+  useEffect(()=>{ 
+    fetch("https://react-04-2022-default-rtdb.europe-west1.firebasedatabase.app/tooted.json")
+      .then(res => res.json())
+      .then(object => {
+        const uusMassiiv = [];
+        
+        for (const key in object) {
+          uusMassiiv.push(object[key]);
+        }
+
+        muudaTooted(uusMassiiv);
+      })
+    },[])
                                                                             // URLst = "coca-cola"
 // LocalStorage-st ---> [{nimi: 'Sprite', hind: '13', aktiivne: true}, {nimi: 'Coca cola', hind: '13', aktiivne: true}, {nimi: 'Coca cola', hind: '2', aktiivne: true}]
                 //{nimi: 'Sprite', hind: '13', aktiivne: true} =>
@@ -21,8 +36,10 @@ function YksikToode() {
 
   return (
     <div>
-      <div>{toode.nimi}</div>
-      <div>{toode.hind}</div>
+     { toode && <div>
+        <div>{toode.nimi}</div>
+        <div>{toode.hind}</div>
+      </div>}
     </div>)
 }
 

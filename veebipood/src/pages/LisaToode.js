@@ -8,21 +8,33 @@ function LisaToode() {
   function lisaUusToode() {
     //   <input id="nimi" type="text" /> <br />
     //   document.getElementById("nimi").value
-    console.log(nimiRef.current.value);
-    console.log(hindRef.current.value);
-    console.log(aktiivneRef.current.checked);
-    let tooted = [];
-    if (localStorage.getItem("tooted") !== null) {
-      tooted = JSON.parse(localStorage.getItem("tooted")); // "[{nimi: "Coca-cola", 2, true}]"
-    } 
+    // console.log(nimiRef.current.value);
+    // console.log(hindRef.current.value);
+    // console.log(aktiivneRef.current.checked);
+    // let tooted = [];
+    // if (localStorage.getItem("tooted") !== null) {
+    //   tooted = JSON.parse(localStorage.getItem("tooted")); // "[{nimi: "Coca-cola", 2, true}]"
+    // } 
     const uusToode = {
       nimi: nimiRef.current.value, // nimi: "Coca-cola"
       hind: hindRef.current.value,
       aktiivne: aktiivneRef.current.checked
     }
-    tooted.push(uusToode);
+    // tooted.push(uusToode);
                   //      1 võti         "[{nimi: "Coca-cola", 2, true}]"
-    localStorage.setItem("tooted", JSON.stringify(tooted));
+    // localStorage.setItem("tooted", JSON.stringify(tooted));
+    fetch("https://react-04-2022-default-rtdb.europe-west1.firebasedatabase.app/tooted.json",{
+      method: "POST",
+      body: JSON.stringify(uusToode),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+
+    // ENNE localStorage-sse uue toote
+            // web.app <--- vana sees (ENNE), kood uueneb web.app lehel vaid siis kui teeme: 
+            //      npm run build ja firebase deploy
+    // NÜÜD lisab andmebaasi
   }
 
   return (

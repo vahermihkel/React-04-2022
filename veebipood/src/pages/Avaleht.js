@@ -1,21 +1,36 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 function Avaleht() {
   // const [s6na, muudaS6na] = useState("50");
   // const [numbriline, muudaNumber] = useState(22);
   // const [kahendV22rtus, muudaKahendV22rtust] = useState(true);
-  const [tooted, muudaTooted] = useState(v6taLocalStoragest());
+  const [tooted, muudaTooted] = useState([]);
 
-  function v6taLocalStoragest() {
-    if (localStorage.getItem("tooted") === null) { // null on tühjus    // undefined
-      return [];
-    } else {
-      //console.log(typeof localStorage.getItem("avaleheMassiiv")); // STRING
-      //console.log(typeof JSON.parse(localStorage.getItem("avaleheMassiiv"))); // MASSIIV
-      return JSON.parse(localStorage.getItem("tooted")); // peab olema massiiv
-    }
-  }
+  useEffect(()=>{ 
+    fetch("https://react-04-2022-default-rtdb.europe-west1.firebasedatabase.app/tooted.json")
+      .then(res => res.json())
+      .then(object => {
+        const uusMassiiv = [];
+        
+        for (const key in object) {
+          uusMassiiv.push(object[key]);
+        }
+
+        muudaTooted(uusMassiiv);
+      })
+    },[])
+ 
+  // function v6taLocalStoragest() {
+  //   if (localStorage.getItem("tooted") === null) { // null on tühjus    // undefined
+  //     return [];
+  //   } else {
+  //   [{"aktiivne": true, "hind": "3","nimi": "Vitamin well"},{"aktiivne": true, "hind": "3","nimi": "Vitamin well"} ]
+  //     //console.log(typeof localStorage.getItem("avaleheMassiiv")); // STRING
+  //     //console.log(typeof JSON.parse(localStorage.getItem("avaleheMassiiv"))); // MASSIIV
+  //     return JSON.parse(localStorage.getItem("tooted")); // peab olema massiiv
+  //   }
+  // }
 
   // function muudaK6ik() {
   //   muudaS6na("kolmas sõna");
@@ -53,7 +68,7 @@ function Avaleht() {
   return (
   <div>
     <div>{tooted.map(element => 
-      <div>
+      <div key={element.nimi}>
         <Link to={"/toode/" + element.nimi.toLowerCase().replaceAll(" ", "-").replaceAll("õ", "o")}>
           <div>{element.nimi}</div>
           <div>{element.hind}</div>
@@ -70,7 +85,7 @@ function Avaleht() {
 export default Avaleht;
 
 
-    {/* <div>{massiiv.map(element => 
+    /* <div>{massiiv.map(element => 
       <div>
         {element}<button onClick={() => kustuta(element)}>x</button>
       </div>)}
@@ -88,4 +103,4 @@ export default Avaleht;
     <button onClick={() => muudaS6na("uus sõna")}>Anna sõnale uus väärtus</button>
     <button onClick={() => muudaKahendV22rtust(!kahendV22rtus)}>Muuda kahendväärtust</button>
  
-    {["Toode1","Toode2"].map(toode => <div>{toode}</div>)} */}
+    {["Toode1","Toode2"].map(toode => <div>{toode}</div>)} */
