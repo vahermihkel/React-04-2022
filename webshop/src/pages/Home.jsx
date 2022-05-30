@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { ToastContainer, toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 
 function Home() {
   // 1. url
@@ -6,11 +8,18 @@ function Home() {
   // 2. teeb muutuja valmis ja annab talle väärtuse "üks"
   // let products = "üks";
   const [products, setProducts] = useState([]);
+  const { t } = useTranslation();
 
   // 3. läheb andmebaasi päringut tegema, aga ütleb koodile ---> mine edasi (seda teevad fetchid)
   useEffect(()=>{
     fetch(dbUrl).then(res => res.json())
-      .then(body => setProducts(body));
+      .then(body => {
+        const newArray = [];
+        for (const key in body) {
+          newArray.push(body[key]);
+        }
+        setProducts(newArray);
+      });
   },[]);
   
   // 4. annab muutujale uue väärtuse "kolm"
@@ -34,16 +43,48 @@ function Home() {
       cartProducts.push({product: productClicked, quantity: 1});
     }
     sessionStorage.setItem("cartProducts", JSON.stringify(cartProducts));
+    toast.success(t("home.cart-successfully"), {
+      position: "bottom-right",
+      theme: "dark"
+    });
+  }
+
+  const sortAZ = () => {
+    products.sort((a,b) => a.name.localeCompare(b.name));
+    setProducts(products.slice());
+  }
+
+  const sortZA = () => {
+    products.sort((a,b) => b.name.localeCompare(a.name));
+    setProducts(products.slice());
+  }
+
+  const sortPriceAsc = () => {
+    products.sort((a,b) => a.price - b.price);
+    setProducts(products.slice());
+  }
+
+  const sortPriceDesc = () => {
+    products.sort((a,b) => b.price - a.price);
+    setProducts(products.slice());
   }
 
   // 5. HTML jõutakse ALATI valmis enne kui fetch
   // kui HTML on valmis, siis tagantjärgi muutujate muutumisi ei kontrollita
-  return (<div>{products.map(element => 
+  return (<div>
+    <button onClick={() => sortAZ()}>{t('home.sortAZ')}</button>
+    <button onClick={() => sortZA()}>Sorteeri Z-A</button>
+    <button onClick={() => sortPriceAsc()}>Hind kasvavalt</button>
+    <button onClick={() => sortPriceDesc()}>Hind kahanevalt</button>
+    {products.map(element => 
     <div>
+      <img src={element.imgSrc} alt="Toote pilt" />
       <div>{element.name}</div>
       <div>{element.price} €</div>
-      <button onClick={() => addToCart(element)}>Lisa ostukorvi</button>
-    </div>)}</div>)
+      <button onClick={() => addToCart(element)}>{t('home.add-to-cart-button')}</button>
+    </div>)}
+    <ToastContainer />
+    </div>)
 }
 
 export default Home;

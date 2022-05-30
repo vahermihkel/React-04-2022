@@ -9,21 +9,30 @@ const resources = {
     translation: {
       "Welcome to React": "Tere tulemast Reacti",
       "navbar.admin-button": "Administraatori vaatesse",
-      "navbar.cart-button": "Ostukorvi"
+      "navbar.cart-button": "Ostukorvi",
+      "home.sortAZ": "Sorteeri A-Z",
+      "home.add-to-cart-button": "Lisa ostukorvi",
+      "home.cart-successfully": "Edukalt ostukorvi lisatud!"
     }
   },
   ru: {
     translation: {
       "Welcome to React": "Bienvenue à React et react-i18next",
       "navbar.admin-button": "Administraator RU",
-      "navbar.cart-button": "Ostukorv RU"
+      "navbar.cart-button": "Ostukorv RU",
+      "home.sortAZ": "Sorteeri A-Z RU",
+      "home.add-to-cart-button": "Lisa ostukorvi RU",
+      "home.cart-successfully": "Edukalt ostukorvi lisatud! RU"
     }
   },
   en: {
     translation: {
       "Welcome to React": "Welcome to React and react-i18next",
       "navbar.admin-button": "To admin view",
-      "navbar.cart-button": "To cart"
+      "navbar.cart-button": "To cart",
+      "home.sortAZ": "Sort A-Z",
+      "home.add-to-cart-button": "Add to cart",
+      "home.cart-successfully": "Successfully added to cart!"
     }
   }
 };
