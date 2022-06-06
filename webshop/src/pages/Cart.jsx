@@ -32,7 +32,7 @@ function Cart() {
 
   //{product:{"name":"Men's Watch Mesh","price":6.09}, quantity: 1}
   return (<div>{cartProducts.map(element => 
-    <div className="cartProduct">
+    <div key={element.id} className="cartProduct">
       <img className="cartProductImg" src={element.product.imgSrc} alt="" />
       <div className="cartProductName">{element.product.name}</div>
       <div className="cartProductPrice">{element.product.price} €</div>

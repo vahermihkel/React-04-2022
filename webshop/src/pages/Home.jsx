@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
+import Spinner from "../components/Spinner";
 
 function Home() {
   // 1. url
@@ -76,8 +77,10 @@ function Home() {
     <button onClick={() => sortZA()}>Sorteeri Z-A</button>
     <button onClick={() => sortPriceAsc()}>Hind kasvavalt</button>
     <button onClick={() => sortPriceDesc()}>Hind kahanevalt</button>
+    <br />
+    {products.length === 0 && <Spinner />}
     {products.map(element => 
-    <div>
+    <div key={element.id}>
       <img src={element.imgSrc} alt="Toote pilt" />
       <div>{element.name}</div>
       <div>{element.price} €</div>
