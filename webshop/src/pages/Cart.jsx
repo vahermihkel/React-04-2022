@@ -1,4 +1,5 @@
 import { useState } from "react";
+import ParcelMachine from "../components/ParcelMachine";
 import "../css/Cart.css";
 
 function Cart() {
@@ -37,13 +38,18 @@ function Cart() {
       <div className="cartProductName">{element.product.name}</div>
       <div className="cartProductPrice">{element.product.price} €</div>
       <div className="cartProductQuantity">
-        <img className="cartProductButton" onClick={() => decreaseQuantity(element)} src="/cart/minus.png" alt="" />
+        { element.product.id !== 11112222 && <img className="cartProductButton" onClick={() => decreaseQuantity(element)} src="/cart/minus.png" alt="" />}
         <div>{element.quantity} tk</div>
-        <img className="cartProductButton" onClick={() => increaseQuantity(element)} src="/cart/plus.png" alt="" />
+        { element.product.id !== 11112222 && <img className="cartProductButton" onClick={() => increaseQuantity(element)} src="/cart/plus.png" alt="" />}
       </div>
       <div className="cartProductTotal">{(element.product.price * element.quantity).toFixed(2)} €</div>
-      <img className="cartProductButton" onClick={() => removeFromCart(element)} src="/cart/delete.png" alt="" />
-    </div>)}</div>)
+      { element.product.id !== 11112222 && <img className="cartProductButton" onClick={() => removeFromCart(element)} src="/cart/delete.png" alt="" />}
+    </div>)}
+
+
+    <ParcelMachine products={cartProducts} productsChanged={setCartProducts} />
+    <br /><br /><br />
+    </div>)
 }
 
 export default Cart;
