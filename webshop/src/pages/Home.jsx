@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import Spinner from "../components/Spinner";
+import SortButtons from "../components/SortButtons";
 
 function Home() {
   // 1. url
@@ -9,6 +10,8 @@ function Home() {
   // 2. teeb muutuja valmis ja annab talle väärtuse "üks"
   // let products = "üks";
   const [products, setProducts] = useState([]);
+  const [originalProducts, setOriginalProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const { t } = useTranslation();
 
   // 3. läheb andmebaasi päringut tegema, aga ütleb koodile ---> mine edasi (seda teevad fetchid)
@@ -20,6 +23,9 @@ function Home() {
           newArray.push(body[key]);
         }
         setProducts(newArray);
+        setOriginalProducts(newArray);
+        const catFromProducts = newArray.map(element => element.category);
+        setCategories([...new Set(catFromProducts)]);
       });
   },[]);
   
@@ -41,7 +47,13 @@ function Home() {
     if (index >= 0) {
       cartProducts[index].quantity = cartProducts[index].quantity + 1;
     } else {
-      cartProducts.push({product: productClicked, quantity: 1});
+      const pmIndex = cartProducts.findIndex(element => element.product.id === 11112222);
+      const newProduct = {product: productClicked, quantity: 1};
+      if (pmIndex >= 0) {
+        cartProducts.splice(cartProducts.length-1, 0, newProduct);
+      } else {
+        cartProducts.push(newProduct);
+      }
     }
     sessionStorage.setItem("cartProducts", JSON.stringify(cartProducts));
     toast.success(t("home.cart-successfully"), {
@@ -50,33 +62,28 @@ function Home() {
     });
   }
 
-  const sortAZ = () => {
-    products.sort((a,b) => a.name.localeCompare(b.name));
-    setProducts(products.slice());
-  }
+  const [selectedCategory, setSelectedCategory] = useState('all');
 
-  const sortZA = () => {
-    products.sort((a,b) => b.name.localeCompare(a.name));
-    setProducts(products.slice());
-  }
-
-  const sortPriceAsc = () => {
-    products.sort((a,b) => a.price - b.price);
-    setProducts(products.slice());
-  }
-
-  const sortPriceDesc = () => {
-    products.sort((a,b) => b.price - a.price);
-    setProducts(products.slice());
+  const productsByCat = (category) => {
+    if (category === 'all') {
+      setProducts(originalProducts);
+      setSelectedCategory('all');
+    } else {
+      const newProducts = originalProducts.filter(element => element.category === category);
+      setProducts(newProducts);
+      setSelectedCategory(category);
+    }
   }
 
   // 5. HTML jõutakse ALATI valmis enne kui fetch
   // kui HTML on valmis, siis tagantjärgi muutujate muutumisi ei kontrollita
   return (<div>
-    <button onClick={() => sortAZ()}>{t('home.sortAZ')}</button>
-    <button onClick={() => sortZA()}>Sorteeri Z-A</button>
-    <button onClick={() => sortPriceAsc()}>Hind kasvavalt</button>
-    <button onClick={() => sortPriceDesc()}>Hind kahanevalt</button>
+    <div className={selectedCategory === "all" ? "selected" : undefined} onClick={() => productsByCat('all')}>
+      Kõik kategooriad
+    </div>
+    { categories.map(element => <div className={selectedCategory === element ? "selected" : undefined} 
+        onClick={() => productsByCat(element)} key={element}>{element}</div>) }
+    <SortButtons products={products} setProducts={setProducts} />
     <br />
     {products.length === 0 && <Spinner />}
     {products.map(element => 

@@ -50,7 +50,10 @@ function ViewProducts() {
       headers: {
         "Content-Type": "application/json"
       }
-    }).then(() => setProducts(originalProducts.slice()))
+    }).then(() => {
+      toast.success(t("Edukalt kustutatud"));
+      setProducts(originalProducts.slice());
+    })
   }
   
   return (<div>

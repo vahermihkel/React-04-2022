@@ -1,5 +1,5 @@
 import L from 'leaflet';
-import { MapContainer, TileLayer, useMap, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import ChangeView from '../components/ChangeView';

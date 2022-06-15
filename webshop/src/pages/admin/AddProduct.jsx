@@ -66,6 +66,9 @@ function AddProduct() {
     } else {
       setErrorMessage("");
     }
+    if (idRef.current.value === "11112222") {
+      setErrorMessage("Sisestasid pakiautomaadi ID!");
+    }
   }
 
   return (<div>
@@ -81,7 +84,7 @@ function AddProduct() {
     <label>Kategooria</label> <br />
     {/* <input ref={categoryRef} type="text" /> <br /> */}
     <select ref={categoryRef}>
-      {categories.map(element => <option>{element.name}</option>) }
+      {categories.map(element => <option key={element.id}>{element.name}</option>) }
     </select> <br />
     <label>Pilt</label> <br />
     <input ref={imgSrcRef} type="text" /> <br />

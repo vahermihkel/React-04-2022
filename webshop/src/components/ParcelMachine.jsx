@@ -3,12 +3,8 @@ import { useEffect, useRef, useState } from "react";
 function ParcelMachine(props) {
   const [parcelMachines, setParcelMachines] = useState([]);
   const [selectedParcelMachine, setSelectedParcelMachine] = useState(sessionStorage.getItem("parcelMachine"));
-
-  // klikivajutusega kutsun välja funktsiooni, mis paneb valitud pakiautomaadile väärtuse
-  // valitus pakiautomaadi näitan välja
-  // { selectedParcelMachine &&  siis näita mingit div-i, mis on VALITUD
-  // X ---> pane tagasi tühjus valitud pakiautomaadi kohale
-  // { !selectedParcelMachine && <select>  }
+  
+  const parcelMachineRef = useRef();
 
   useEffect(() => {
     fetch("https://www.omniva.ee/locations.json")
@@ -16,20 +12,30 @@ function ParcelMachine(props) {
       .then(body => setParcelMachines(body));
   }, [])
 
+  // useImperativeHandle(() => ({
+  //   deleteSelectedParcelMachine,
+  // }));
+
   const onChangeParcelMachine = () => {
     setSelectedParcelMachine(parcelMachineRef.current.value);
-    props.products.push({product:{id: 11112222, name: "Pakiautomaadi tasu", imgSrc: require("../assets/locker.png"), price: 3.5}, quantity: 1});
+    const pm = {
+      product:
+      { id: 11112222, name: "Pakiautomaadi tasu", imgSrc: require("../assets/locker.png"), price: 3.5},
+      quantity: 1
+    };
+    props.products.push(pm);
     props.productsChanged(props.products.slice());
     sessionStorage.setItem("cartProducts", JSON.stringify(props.products));
     sessionStorage.setItem("parcelMachine", parcelMachineRef.current.value);
   }
 
-  const parcelMachineRef = useRef();
-
   const deleteSelectedParcelMachine = () => {
     setSelectedParcelMachine(null);
-    const index = props.products.findIndex(element => element.id === 11112222);
-    props.products.splice(index,1);
+    // const index = props.products.findIndex(element => element.id === 11112222);
+    // ---> const index = -1;   <----- ei leita
+    // ---> props.products.splice(-1,1); kustutab viimase
+    // props.products.splice(index,1);
+    props.products.pop();
     props.productsChanged(props.products.slice());
     sessionStorage.setItem("cartProducts", JSON.stringify(props.products));
     sessionStorage.removeItem("parcelMachine");
@@ -37,10 +43,15 @@ function ParcelMachine(props) {
 
 
   return (<div>  
-    { selectedParcelMachine === null && <select onChange={onChangeParcelMachine} ref={parcelMachineRef}>
-    {parcelMachines.filter(element => element.A0_NAME === "EE").map(element => <option>{element.NAME}</option>)}
+    { selectedParcelMachine === null && props.products.length > 0 && 
+  <select onChange={onChangeParcelMachine} ref={parcelMachineRef}>
+    {parcelMachines.filter(element => element.A0_NAME === "EE").map(element => 
+      <option key={element.NAME}>{element.NAME}</option>)}
   </select>}
-  { selectedParcelMachine !== null && <div>{selectedParcelMachine} <button onClick={deleteSelectedParcelMachine}>X</button></div>}
+  { selectedParcelMachine !== null && 
+    <div>
+      {selectedParcelMachine} <button onClick={deleteSelectedParcelMachine}>X</button>
+    </div>}
   </div>)
 }
 
