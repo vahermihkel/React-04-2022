@@ -43,7 +43,7 @@ function AddProduct() {
       description: descriptionRef.current.value,
       category: categoryRef.current.value,
       imgSrc: imgSrcRef.current.value,
-      isActive: isActiveRef.current.value
+      isActive: isActiveRef.current.checked
     }
 
     fetch(dbUrl, {

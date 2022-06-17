@@ -53,17 +53,36 @@ function ViewProducts() {
     }).then(() => {
       toast.success(t("Edukalt kustutatud"));
       setProducts(originalProducts.slice());
+      searchProducts();
+    })
+  }
+
+  const changeActive = (productClicked) => {
+    const index = originalProducts.indexOf(productClicked);
+    originalProducts[index].isActive = !originalProducts[index].isActive;
+    setProducts(originalProducts.slice());
+    searchProducts();
+    fetch(dbUrl, {
+      method: "PUT",
+      body: JSON.stringify(originalProducts),
+      headers: {
+        "Content-Type": "application/json"
+      }
     })
   }
   
   return (<div>
     <input ref={searchedRef} onChange={searchProducts} type="text" />
+    <div>{products.length}</div>
     {products.map(element => 
-    <div key={element.id} className="cartProduct">
-      <img className="cartProductImg" src={element.imgSrc} alt="Toote pilt" />
-      <div>{element.id}</div>
-      <div>{element.name}</div>
-      <div>{element.price} €</div>
+    <div key={element.id} className={`cartProduct ${element.isActive ? "active": "inactive"} `}>
+      <div onClick={() => changeActive(element)}>
+        <img className="cartProductImg" src={element.imgSrc} alt="Toote pilt" />
+        <div>{element.id}</div>
+        <div>{element.name}</div>
+        <div>{element.description}</div>
+        <div>{element.price} €</div>
+      </div>
       <button onClick={() => deleteProduct(element)}>X</button>
     </div>)}
     <ToastContainer />

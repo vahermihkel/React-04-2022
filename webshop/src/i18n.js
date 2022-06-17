@@ -12,7 +12,8 @@ const resources = {
       "navbar.cart-button": "Ostukorvi",
       "home.sortAZ": "Sorteeri A-Z",
       "home.add-to-cart-button": "Lisa ostukorvi",
-      "home.cart-successfully": "Edukalt ostukorvi lisatud!"
+      "home.cart-successfully": "Edukalt ostukorvi lisatud!",
+      'filterbar.all-categories': "Kõik kategooriad"
     }
   },
   ru: {
@@ -22,7 +23,8 @@ const resources = {
       "navbar.cart-button": "Ostukorv RU",
       "home.sortAZ": "Sorteeri A-Z RU",
       "home.add-to-cart-button": "Lisa ostukorvi RU",
-      "home.cart-successfully": "Edukalt ostukorvi lisatud! RU"
+      "home.cart-successfully": "Edukalt ostukorvi lisatud! RU",
+      'filterbar.all-categories': "Kõik kategooriad RU"
     }
   },
   en: {
@@ -32,7 +34,8 @@ const resources = {
       "navbar.cart-button": "To cart",
       "home.sortAZ": "Sort A-Z",
       "home.add-to-cart-button": "Add to cart",
-      "home.cart-successfully": "Successfully added to cart!"
+      "home.cart-successfully": "Successfully added to cart!",
+      'filterbar.all-categories': "All categories"
     }
   }
 };
