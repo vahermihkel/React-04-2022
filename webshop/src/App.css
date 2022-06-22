@@ -20,3 +20,8 @@
 .inactive {
   border: 1px solid red;
 }
+
+.carousel {
+  width: 502px;
+  margin: auto;
+}

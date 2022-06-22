@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import FileUpload from "../../components/FileUpload";
 
 function AddProduct() {
   const idRef = useRef();
@@ -12,6 +13,8 @@ function AddProduct() {
   const [products, setProducts] = useState([]);
   const categoriesDbUrl = "https://react-05-22-default-rtdb.europe-west1.firebasedatabase.app/categories.json";
   const [categories, setCategories] = useState([]);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [pictureUrl, setPictureUrl] = useState(null); // 1.
 
   useEffect(()=>{
     fetch(dbUrl).then(res => res.json())
@@ -42,7 +45,7 @@ function AddProduct() {
       price: priceRef.current.value,
       description: descriptionRef.current.value,
       category: categoryRef.current.value,
-      imgSrc: imgSrcRef.current.value,
+      imgSrc: pictureUrl, // 2.
       isActive: isActiveRef.current.checked
     }
 
@@ -55,12 +58,8 @@ function AddProduct() {
     })
   }
 
-  const [errorMessage, setErrorMessage] = useState("");
-
   const checkIfIdUnique = () => {
     const index = products.findIndex(element => Number(element.id) === Number(idRef.current.value));
-    console.log(idRef.current.value);
-    console.log(index);
     if (index >= 0) {
       setErrorMessage("Sisestasid teise tootega sama ID!");
     } else {
@@ -82,12 +81,12 @@ function AddProduct() {
     <label>Kirjeldus</label> <br />
     <input ref={descriptionRef} type="text" /> <br />
     <label>Kategooria</label> <br />
-    {/* <input ref={categoryRef} type="text" /> <br /> */}
     <select ref={categoryRef}>
       {categories.map(element => <option key={element.id}>{element.name}</option>) }
     </select> <br />
     <label>Pilt</label> <br />
-    <input ref={imgSrcRef} type="text" /> <br />
+    {/* <input ref={imgSrcRef} type="text" /> <br /> */}
+    <FileUpload onSendPictureUrl={setPictureUrl} />
     <label>Aktiivne</label> <br />
     <input ref={isActiveRef} type="checkbox" /> <br />
     <button disabled={errorMessage !== ""} onClick={() => addNewProduct()}>Sisesta uus</button>

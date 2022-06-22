@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { ToastContainer } from 'react-toastify';
-import Spinner from "../components/Spinner";
-import SortButtons from "../components/SortButtons";
-import FilterBar from "../components/FilterBar";
-import Product from "../components/Product";
+import Spinner from "../components/home/Spinner";
+import SortButtons from "../components/home/SortButtons";
+import FilterBar from "../components/home/FilterBar";
+import Product from "../components/home/Product";
+import CarouselGallery from "../components/home/CarouselGallery";
 
 function Home() {
   // 1. url
@@ -13,6 +14,7 @@ function Home() {
   const [products, setProducts] = useState([]);
   const [originalProducts, setOriginalProducts] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [isLoading, setLoading] = useState(true);
 
   // 3. läheb andmebaasi päringut tegema, aga ütleb koodile ---> mine edasi (seda teevad fetchid)
   useEffect(()=>{
@@ -21,7 +23,7 @@ function Home() {
         let newArray = [];
         for (const key in body) {
           const product = body[key];
-          if (product.isActive) {
+          if (product.isActive && product.stock > 0) {
             newArray.push(body[key]);
           }
         }
@@ -29,6 +31,7 @@ function Home() {
         setOriginalProducts(newArray);
         const catFromProducts = newArray.map(element => element.category);
         setCategories([...new Set(catFromProducts)]);
+        setLoading(false);
       });
   },[]);
 
@@ -46,6 +49,7 @@ function Home() {
   // 5. HTML jõutakse ALATI valmis enne kui fetch
   // kui HTML on valmis, siis tagantjärgi muutujate muutumisi ei kontrollita
   return (<div>
+    <CarouselGallery />
     { categories.length > 1 && <FilterBar
       originalProducts={originalProducts}
       setProducts={setProducts}
@@ -54,7 +58,7 @@ function Home() {
     { products.length }
     <SortButtons products={products} setProducts={setProducts} />
     <br />
-    {products.length === 0 && <Spinner />}
+    {isLoading && <Spinner />}
     {products.map(e => 
       <Product key={e.id} product={e} />
     )}

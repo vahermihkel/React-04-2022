@@ -17,7 +17,12 @@ function Product(props) {
   }
   const index = cartProducts.findIndex(element => element.product.id === productClicked.id);
   if (index >= 0) {
-    cartProducts[index].quantity = cartProducts[index].quantity + 1;
+    if (cartProducts[index].quantity >= cartProducts[index].product.stock) {
+      toast.error("Vabandame, toodet ei saa rohkem ostukorvi panna!");
+      return; 
+    } else {
+      cartProducts[index].quantity = cartProducts[index].quantity + 1;
+    }
   } else {
     const pmIndex = cartProducts.findIndex(element => element.product.id === 11112222);
     const newProduct = {product: productClicked, quantity: 1};

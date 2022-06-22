@@ -37,6 +37,22 @@ function Category() {
   // ID unikaalsuse kontroll
   // Kategooria kustutamine
 
+  const removeCategory = (categoryClicked) => {
+    const index = categories.findIndex(
+      (element) => element.id === categoryClicked.id
+    );
+    categories.splice(index, 1);
+
+    fetch(dbUrl, {
+      method: "PUT",
+      body: JSON.stringify(categories),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    setCategories(categories.slice());
+  };
+
   return (
   <div>
     <label>Kategooria ID</label> <br />
@@ -47,7 +63,10 @@ function Category() {
     <button onClick={addNewCategory}>Sisesta uus kategooria</button>
     <div>{categories.map(element => 
       <div key={element.id}>
-        <div>{element.name}</div>
+        <div>
+          {element.name}
+          <button onClick={() => removeCategory(element)}>X</button>
+        </div>
       </div>
       )}</div>
   </div>)

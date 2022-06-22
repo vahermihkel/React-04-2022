@@ -28,10 +28,10 @@ function Cart() {
   const removeFromCart = (productClicked) => {
     const index = cartProducts.findIndex(element => element.product.id === productClicked.product.id);
     cartProducts.splice(index,1);
-    // if (cartProducts.length === 1 && cartProducts[0].product.id === 11112222) {
-    //   cartProducts.pop();
-    //   parcelMachineHandleRef.current.deleteSelectedParcelMachine();
-    // }
+    if (cartProducts.length === 1 && cartProducts[0].product.id === 11112222) {
+      cartProducts.pop();
+      // parcelMachineHandleRef.current.deleteSelectedParcelMachine();
+    }
     setCartProducts(cartProducts.slice());
     sessionStorage.setItem("cartProducts", JSON.stringify(cartProducts));
   }
