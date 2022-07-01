@@ -1,5 +1,6 @@
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
+import { cartSumService } from "../../services/cartSumService";
 
 function Product(props) {
   const { t } = useTranslation();
@@ -37,6 +38,9 @@ function Product(props) {
     position: "bottom-right",
     theme: "dark"
   });
+  let sumOfCart = 0;
+  cartProducts.forEach(element => sumOfCart += element.product.price * element.quantity );
+  cartSumService.sendCartSum(sumOfCart);
 }
 
   return (

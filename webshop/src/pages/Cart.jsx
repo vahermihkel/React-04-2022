@@ -1,5 +1,6 @@
 import { useState } from "react";
 import ParcelMachine from "../components/ParcelMachine";
+import { cartSumService } from "../services/cartSumService";
 import "../css/Cart.css";
 
 function Cart() {
@@ -16,6 +17,7 @@ function Cart() {
     }
     setCartProducts(cartProducts.slice());
     sessionStorage.setItem("cartProducts", JSON.stringify(cartProducts));
+    cartSumService.sendCartSum(calculateSumOfCart());
   }
 
   const increaseQuantity = (productClicked) => {
@@ -23,6 +25,7 @@ function Cart() {
     cartProducts[index].quantity++;
     setCartProducts(cartProducts.slice());
     sessionStorage.setItem("cartProducts", JSON.stringify(cartProducts));
+    cartSumService.sendCartSum(calculateSumOfCart());
   }
 
   const removeFromCart = (productClicked) => {
@@ -34,6 +37,7 @@ function Cart() {
     }
     setCartProducts(cartProducts.slice());
     sessionStorage.setItem("cartProducts", JSON.stringify(cartProducts));
+    cartSumService.sendCartSum(calculateSumOfCart());
   }
 
   const calculateSumOfCart = () => {
